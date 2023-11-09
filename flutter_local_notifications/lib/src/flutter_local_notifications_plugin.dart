@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications_linux/flutter_local_notifications_linux.dart';
 import 'package:flutter_local_notifications_platform_interface/flutter_local_notifications_platform_interface.dart';
 import 'package:timezone/timezone.dart';
@@ -407,6 +408,7 @@ class FlutterLocalNotificationsPlugin {
     int id,
     String? title,
     String? body,
+    TimeOfDay? repeatStartTime,
     RepeatInterval repeatInterval,
     NotificationDetails notificationDetails, {
     String? payload,
@@ -420,7 +422,7 @@ class FlutterLocalNotificationsPlugin {
     if (defaultTargetPlatform == TargetPlatform.android) {
       await resolvePlatformSpecificImplementation<
               AndroidFlutterLocalNotificationsPlugin>()
-          ?.periodicallyShow(id, title, body, repeatInterval,
+          ?.periodicallyShow(id, title, body, repeatStartTime, repeatInterval,
               notificationDetails: notificationDetails.android,
               payload: payload,
               scheduleMode: _chooseScheduleMode(
@@ -428,16 +430,16 @@ class FlutterLocalNotificationsPlugin {
     } else if (defaultTargetPlatform == TargetPlatform.iOS) {
       await resolvePlatformSpecificImplementation<
               IOSFlutterLocalNotificationsPlugin>()
-          ?.periodicallyShow(id, title, body, repeatInterval,
+          ?.periodicallyShow(id, title, body, repeatStartTime, repeatInterval,
               notificationDetails: notificationDetails.iOS, payload: payload);
     } else if (defaultTargetPlatform == TargetPlatform.macOS) {
       await resolvePlatformSpecificImplementation<
               MacOSFlutterLocalNotificationsPlugin>()
-          ?.periodicallyShow(id, title, body, repeatInterval,
+          ?.periodicallyShow(id, title, body, repeatStartTime, repeatInterval,
               notificationDetails: notificationDetails.macOS, payload: payload);
     } else {
       await FlutterLocalNotificationsPlatform.instance
-          .periodicallyShow(id, title, body, repeatInterval);
+          .periodicallyShow(id, title, body, repeatStartTime, repeatInterval);
     }
   }
 

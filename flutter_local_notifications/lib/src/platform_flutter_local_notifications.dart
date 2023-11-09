@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:ui';
 
 import 'package:clock/clock.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications_platform_interface/flutter_local_notifications_platform_interface.dart';
 import 'package:timezone/timezone.dart';
@@ -328,17 +329,24 @@ class AndroidFlutterLocalNotificationsPlugin
     int id,
     String? title,
     String? body,
+    TimeOfDay? repeatStartTime,
     RepeatInterval repeatInterval, {
     AndroidNotificationDetails? notificationDetails,
     String? payload,
     AndroidScheduleMode scheduleMode = AndroidScheduleMode.exact,
   }) async {
     validateId(id);
+
+    final DateTime now = clock.now();
+
     await _channel.invokeMethod('periodicallyShow', <String, Object?>{
       'id': id,
       'title': title,
       'body': body,
-      'calledAt': clock.now().millisecondsSinceEpoch,
+      'calledAt': repeatStartTime != null
+          ? DateTime(now.year, now.month, now.day, repeatStartTime.hour,
+              repeatStartTime.minute)
+          : clock.now().millisecondsSinceEpoch,
       'repeatInterval': repeatInterval.index,
       'platformSpecifics':
           _buildPlatformSpecifics(notificationDetails, scheduleMode),
@@ -713,16 +721,23 @@ class IOSFlutterLocalNotificationsPlugin
     int id,
     String? title,
     String? body,
+    TimeOfDay? repeatStartTime,
     RepeatInterval repeatInterval, {
     DarwinNotificationDetails? notificationDetails,
     String? payload,
   }) async {
     validateId(id);
+
+    final DateTime now = clock.now();
+
     await _channel.invokeMethod('periodicallyShow', <String, Object?>{
       'id': id,
       'title': title,
       'body': body,
-      'calledAt': clock.now().millisecondsSinceEpoch,
+      'calledAt': repeatStartTime != null
+          ? DateTime(now.year, now.month, now.day, repeatStartTime.hour,
+              repeatStartTime.minute)
+          : clock.now().millisecondsSinceEpoch,
       'repeatInterval': repeatInterval.index,
       'platformSpecifics': notificationDetails?.toMap(),
       'payload': payload ?? ''
@@ -885,16 +900,23 @@ class MacOSFlutterLocalNotificationsPlugin
     int id,
     String? title,
     String? body,
+    TimeOfDay? repeatStartTime,
     RepeatInterval repeatInterval, {
     DarwinNotificationDetails? notificationDetails,
     String? payload,
   }) async {
     validateId(id);
+
+    final DateTime now = clock.now();
+
     await _channel.invokeMethod('periodicallyShow', <String, Object?>{
       'id': id,
       'title': title,
       'body': body,
-      'calledAt': clock.now().millisecondsSinceEpoch,
+      'calledAt': repeatStartTime != null
+          ? DateTime(now.year, now.month, now.day, repeatStartTime.hour,
+              repeatStartTime.minute)
+          : clock.now().millisecondsSinceEpoch,
       'repeatInterval': repeatInterval.index,
       'platformSpecifics': notificationDetails?.toMap(),
       'payload': payload ?? ''
