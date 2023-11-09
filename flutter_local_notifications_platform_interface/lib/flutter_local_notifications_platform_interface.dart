@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
 import 'src/types.dart';
@@ -45,8 +46,8 @@ abstract class FlutterLocalNotificationsPlatform extends PlatformInterface {
   /// For example, specifying a hourly interval means the first time the
   /// notification will be an hour after the method has been called and then
   /// every hour after that.
-  Future<void> periodicallyShow(
-      int id, String? title, String? body, RepeatInterval repeatInterval) {
+  Future<void> periodicallyShow(int id, String? title, String? body,
+      TimeOfDay? repeatStartTime, RepeatInterval repeatInterval) {
     throw UnimplementedError('periodicallyShow() has not been implemented');
   }
 
