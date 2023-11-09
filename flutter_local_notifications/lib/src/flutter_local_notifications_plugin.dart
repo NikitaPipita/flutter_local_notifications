@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications_linux/flutter_local_notifications_linux.dart';
 import 'package:flutter_local_notifications_platform_interface/flutter_local_notifications_platform_interface.dart';
 import 'package:timezone/timezone.dart';
@@ -408,7 +407,7 @@ class FlutterLocalNotificationsPlugin {
     int id,
     String? title,
     String? body,
-    TimeOfDay? repeatStartTime,
+    int? repeatStartTime,
     RepeatInterval repeatInterval,
     NotificationDetails notificationDetails, {
     String? payload,
